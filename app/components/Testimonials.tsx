@@ -18,6 +18,26 @@ const ITEMS = [
     name: "Marcus Lopez",
     role: "Creative Director",
   },
+  {
+    quote: "Their attention to detail is unmatched — our storefront looks stunning and conversion went up immediately.",
+    name: "Priya Desai",
+    role: "Retail Manager",
+  },
+  {
+    quote: "Responsive, professional, and creative. They delivered on time and were a pleasure to work with.",
+    name: "Liam O'Connell",
+    role: "Operations Lead",
+  },
+  {
+    quote: "A reliable partner who helped us scale our local marketing — bookings are higher than ever.",
+    name: "Nadia Fernandez",
+    role: "Owner",
+  },
+  {
+    quote: "Creative solutions and exceptional support. We felt listened to from day one.",
+    name: "Ethan Brooks",
+    role: "Studio Founder",
+  },
 ]
 
 export default function Testimonials() {
@@ -54,7 +74,7 @@ export default function Testimonials() {
 
         <div
           ref={ref}
-          className="grid grid-flow-col auto-cols-[90%] sm:auto-cols-[48%] lg:auto-cols-[32%] gap-6 overflow-x-auto snap-x snap-mandatory pb-4 scrollbar-hide"
+          className="grid grid-flow-col auto-cols-[90%] sm:auto-cols-[48%] lg:auto-cols-[32%] gap-6 overflow-x-auto snap-x snap-mandatory py-2 scrollbar-hide"
         >
           {ITEMS.map((t, i) => (
             <figure

@@ -20,6 +20,9 @@ module.exports = {
         'secondary-foreground': 'var(--secondary-foreground)',
         muted: 'var(--muted)',
         'muted-foreground': 'var(--muted-foreground)',
+        // navigation link tokens
+        'nav-link': 'var(--nav-link)',
+        'nav-link-foreground': 'var(--nav-link-foreground)',
         accent: 'var(--accent)',
         'accent-foreground': 'var(--accent-foreground)',
         destructive: 'var(--destructive)',

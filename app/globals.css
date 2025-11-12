@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 1rem; 
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 /* ---- Tokens (light) ---- */
 :root {
   --background: oklch(0.99 0 0);
@@ -16,6 +28,8 @@
   --secondary-foreground: oklch(0.15 0 0);
   --muted: oklch(0.96 0 0);
   --muted-foreground: oklch(0.5 0 0);
+  --nav-link: oklch(0.96 0 0);
+  --nav-link-foreground: oklch(82.344% 0.00009 271.152);
   --accent: oklch(0.96 0 0);
   --accent-foreground: oklch(0.15 0 0);
   --destructive: oklch(0.55 0.22 25);
@@ -51,11 +65,13 @@
   --popover: oklch(0.15 0 0);
   --popover-foreground: oklch(0.98 0 0);
   --primary: oklch(0.98 0 0);
-  --primary-foreground: oklch(0.12 0 0);
+  --primary-foreground: oklch(89.449% 0.0001 271.152);
   --secondary: oklch(0.2 0 0);
   --secondary-foreground: oklch(0.98 0 0);
   --muted: oklch(0.2 0 0);
   --muted-foreground: oklch(0.6 0 0);
+  --nav-link: oklch(0.96 0 0);
+  --nav-link-foreground: oklch(87.632% 0.00881 16.703);
   --accent: oklch(0.2 0 0);
   --accent-foreground: oklch(0.98 0 0);
   --destructive: oklch(0.45 0.2 25);
