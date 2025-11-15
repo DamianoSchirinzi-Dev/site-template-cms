@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X, Moon, Sun } from "lucide-react";
 
-export default function Header() {
+export default function Header({ heroHeight }: { heroHeight: number }) {
   const [open, setOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -15,15 +15,23 @@ export default function Header() {
       : window.matchMedia("(prefers-color-scheme: light)").matches;
     setIsDark(preferDark);
     document.documentElement.classList.toggle("dark", preferDark);
+  }, []);
 
+  useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
+
       setScrolled(scrollPosition > 20);
-      setOverHero(scrollPosition < 900);
+
+      const threshold = Math.max(heroHeight - 20, 0);
+      setOverHero(scrollPosition < threshold);
     };
+
+    handleScroll();
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [heroHeight]);
 
   const toggleTheme = () => {
     const next = !isDark;
@@ -43,7 +51,7 @@ export default function Header() {
       <nav className="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex justify-between items-center">
         <a
           href="#"
-          className={`text-xl font-semibold tracking-tight hover:opacity-70 transition-all duration-500 ${
+          className={`text-2xl font-semibold tracking-tight hover:opacity-70 transition-all duration-500 ${
             overHero ? "text-white" : "text-gray-900"
           }`}
         >
@@ -51,7 +59,7 @@ export default function Header() {
         </a>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium">
+        <div className="hidden md:flex items-center gap-8 text-md font-medium">
           <a
             href="#about"
             className={`relative transition-all duration-500 group ${

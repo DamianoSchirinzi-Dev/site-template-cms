@@ -9,7 +9,7 @@ export default function Gallery() {
   ]
 
   return (
-    <section id="gallery" className="py-24 md:py-32 px-6 bg-muted/30">
+    <section id="gallery" className="py-16 md:py-28 px-6 bg-muted/30">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl md:text-5xl font-semibold tracking-tight mb-16 text-center animate-in fade-in slide-in-from-bottom-4 duration-700">
           Our Work

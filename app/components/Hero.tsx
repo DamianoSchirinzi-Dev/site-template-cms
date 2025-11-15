@@ -1,11 +1,18 @@
-export default function Hero() {
+import { forwardRef } from "react";
+
+const Hero = forwardRef<HTMLDivElement>((props, ref) => {
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section
+      ref={ref}
+      id="hero"
+      className="relative h-screen flex items-center justify-center overflow-hidden"
+    >
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center scale-105 animate-in fade-in zoom-in-105 duration-1000"
         style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=2574')",
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=2574')",
         }}
       />
 
@@ -43,5 +50,7 @@ export default function Hero() {
         </div>
       </div>
     </section>
-  )
-}
+  );
+});
+
+export default Hero;
