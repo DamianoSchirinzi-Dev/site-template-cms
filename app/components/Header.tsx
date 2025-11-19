@@ -1,8 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Menu, X, Moon, Sun } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
-export default function Header({ heroHeight }: { heroHeight: number }) {
+interface HeaderProps {
+  heroHeight: number;
+  businessName: string;
+}
+
+export default function Header({ heroHeight, businessName }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -13,23 +18,23 @@ export default function Header({ heroHeight }: { heroHeight: number }) {
     const preferDark = stored
       ? stored === "dark"
       : window.matchMedia("(prefers-color-scheme: light)").matches;
+
     setIsDark(preferDark);
     document.documentElement.classList.toggle("dark", preferDark);
   }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-
-      setScrolled(scrollPosition > 20);
+      const scrollY = window.scrollY;
+      setScrolled(scrollY > 20);
 
       const threshold = Math.max(heroHeight - 20, 0);
-      setOverHero(scrollPosition < threshold);
+      setOverHero(scrollY < threshold);
     };
 
     handleScroll();
-
     window.addEventListener("scroll", handleScroll);
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, [heroHeight]);
 
@@ -43,13 +48,6 @@ export default function Header({ heroHeight }: { heroHeight: number }) {
     };
   }, [open]);
 
-  const toggleTheme = () => {
-    const next = !isDark;
-    setIsDark(next);
-    document.documentElement.classList.toggle("dark", next);
-    localStorage.setItem("theme", next ? "dark" : "light");
-  };
-
   return (
     <>
       <header
@@ -62,91 +60,54 @@ export default function Header({ heroHeight }: { heroHeight: number }) {
         <nav className="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex justify-between items-center">
           <a
             href="#"
-            className={`text-2xl font-semibold tracking-tight hover:opacity-70 transition-all duration-500 ${
+            className={`text-2xl font-semibold tracking-tight transition-all ${
               overHero ? "text-white" : "text-gray-900"
             }`}
           >
-            Business Name
+            {businessName}
           </a>
 
-          {/* Desktop Nav */}
+          {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8 text-md font-medium">
-            <a
-              href="#about"
-              className={`relative transition-all duration-500 group ${
-                overHero
-                  ? "text-white/80 hover:text-white"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
-            >
-              About
-              <span
-                className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 ease-out group-hover:w-full ${
-                  overHero ? "bg-white" : "bg-gray-900"
-                }`}
-              ></span>
-            </a>
-            <a
-              href="#gallery"
-              className={`relative transition-all duration-500 group ${
-                overHero
-                  ? "text-white/80 hover:text-white"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
-            >
-              Gallery
-              <span
-                className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 ease-out group-hover:w-full ${
-                  overHero ? "bg-white" : "bg-gray-900"
-                }`}
-              ></span>
-            </a>
-            <a
-              href="#location"
-              className={`relative transition-all duration-500 group ${
-                overHero
-                  ? "text-white/80 hover:text-white"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
-            >
-              Find Us
-              <span
-                className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 ease-out group-hover:w-full ${
-                  overHero ? "bg-white" : "bg-gray-900"
-                }`}
-              ></span>
-            </a>
-            <a
-              href="#contact"
-              className={`inline-flex items-center rounded-full px-6 py-2.5 transition-all duration-500 hover:opacity-90 hover:scale-105 ${
-                overHero ? "bg-white text-gray-900" : "bg-gray-900 text-white"
-              }`}
-            >
-              Contact
-            </a>
+            {["About", "Gallery", "Find Us", "Contact"].map((item, idx) => {
+              const href = ["#about", "#gallery", "#location", "#contact"][idx];
+
+              return (
+                <a
+                  key={item}
+                  href={href}
+                  className={`relative transition-all duration-500 group ${
+                    overHero
+                      ? "text-white/80 hover:text-white"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  {item}
+                  <span
+                    className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
+                      overHero ? "bg-white" : "bg-gray-900"
+                    }`}
+                  />
+                </a>
+              );
+            })}
           </div>
 
           {/* Mobile */}
           <div className="md:hidden flex items-center gap-2">
             <button
-              className={`inline-flex h-9 w-9 items-center justify-center transition-all duration-300 ease-out ${
+              onClick={() => setOpen(!open)}
+              className={`inline-flex h-9 w-9 items-center justify-center transition-all ${
                 overHero ? "text-white" : "text-gray-900"
               }`}
-              onClick={() => setOpen(!open)}
-              aria-label={open ? "Close menu" : "Open menu"}
             >
-              <div
-                className={`transition-transform duration-300 ease-out ${
-                  open ? "rotate-90" : "rotate-0"
-                }`}
-              >
-                {open ? <X size={24} /> : <Menu size={24} />}
-              </div>
+              {open ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </nav>
       </header>
 
+      {/* Mobile Menu */}
       <div
         className={`fixed inset-0 z-40 md:hidden transition-all duration-100 ease-in-out ${
           open
@@ -154,10 +115,8 @@ export default function Header({ heroHeight }: { heroHeight: number }) {
             : "opacity-0 pointer-events-none"
         }`}
       >
-        {/* Background with backdrop blur */}
         <div className="absolute inset-0 bg-white/98 backdrop-blur-xl"></div>
 
-        {/* Menu content */}
         <div className="relative h-full flex flex-col items-center justify-center gap-10 px-6">
           {[
             { label: "About", href: "#about", delay: 100 },
@@ -166,8 +125,8 @@ export default function Header({ heroHeight }: { heroHeight: number }) {
           ].map((item) => (
             <a
               key={item.label}
-              onClick={() => setOpen(false)}
               href={item.href}
+              onClick={() => setOpen(false)}
               className={`
                 text-4xl font-semibold text-gray-900 
                 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
@@ -178,23 +137,20 @@ export default function Header({ heroHeight }: { heroHeight: number }) {
                     : "opacity-0 translate-y-6 scale-95"
                 }
               `}
-              style={{
-                transitionDelay: open ? `${item.delay}ms` : "0ms",
-              }}
+              style={{ transitionDelay: open ? `${item.delay}ms` : "0ms" }}
             >
               {item.label}
             </a>
           ))}
 
-          {/* Contact Button */}
           <a
-            onClick={() => setOpen(false)}
             href="#contact"
+            onClick={() => setOpen(false)}
             className={`
               inline-flex items-center rounded-full bg-gray-900 text-white 
               px-10 py-4 text-2xl font-semibold 
               transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
-              hover:scale-105 active:scale-95 
+              hover:scale-105 active:scale-95
               ${
                 open
                   ? "opacity-100 translate-y-0 scale-100"

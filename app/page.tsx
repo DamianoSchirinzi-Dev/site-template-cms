@@ -1,44 +1,43 @@
-"use client";
+import HomeClient from "./home-client";
+import { sanityClient } from "@/sanity/lib/client";
+import { urlFor } from "@/sanity/lib/image";
 
-import { useEffect, useRef, useState } from "react";
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import About from "./components/About";
-import Gallery from "./components/Gallery";
-import Testimonials from "./components/Testimonials";
-import Location from "./components/Location";
-import ContactCta from "./components/ContactCta";
-import Footer from "./components/Footer";
+export default async function Page() {
+  // Fetch singletons
+  const hero = await sanityClient.fetch(`*[_type == "hero"][0]`);
+  const about = await sanityClient.fetch(`*[_type == "about"][0]`);
+  const gallery = await sanityClient.fetch(`*[_type == "gallery"][0]`);
+  const location = await sanityClient.fetch(`*[_type == "location"][0]`);
+  const contact = await sanityClient.fetch(`*[_type == "contact"][0]`);
+  const header = await sanityClient.fetch(`*[_type == "header"][0]`);
+  const footer = await sanityClient.fetch(`*[_type == "footer"][0]`);
 
-export default function HomePage() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const [heroHeight, setHeroHeight] = useState(0);
-
-  useEffect(() => {
-    const updateHeroHeight = () => {
-      if (heroRef.current) {
-        setHeroHeight(heroRef.current.offsetHeight);
-        console.log("Hero height:", heroRef.current.offsetHeight);
-      }
-    };
-
-    updateHeroHeight();
-    window.addEventListener("resize", updateHeroHeight);
-    return () => window.removeEventListener("resize", updateHeroHeight);
-  }, []);
+  // Fetch repeatable documents
+  const testimonials = await sanityClient.fetch(`*[_type == "testimonial"]`);
 
   return (
-    <>
-      <main className="min-h-screen">
-        <Header heroHeight={heroHeight} />
-        <Hero ref={heroRef} />
-        <About />
-        <Gallery />
-        <Testimonials />
-        <Location />
-        <ContactCta />
-        <Footer />
-      </main>
-    </>
+    <HomeClient
+      data={{
+        header,
+        footer,
+
+        hero: {
+          ...hero,
+          backgroundImage: hero?.backgroundImage
+            ? urlFor(hero.backgroundImage).url()
+            : null,
+        },
+
+        about,
+
+        gallery: {
+          ...gallery,
+          images: gallery?.images?.map((img: any) => urlFor(img).url()),
+        },
+        testimonials,
+        location,
+        contact,
+      }}
+    />
   );
 }

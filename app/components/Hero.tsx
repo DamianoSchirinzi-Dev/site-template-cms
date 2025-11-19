@@ -1,6 +1,21 @@
 import { forwardRef } from "react";
+import { urlFor } from "@/sanity/lib/image";
 
-const Hero = forwardRef<HTMLDivElement>((props, ref) => {
+export interface HeroData {
+  title: string;
+  subtitle: string;
+  backgroundImage?: { asset: any };
+  ctaPrimary: string;
+  ctaSecondary: string;
+}
+
+interface HeroProps {
+  data: HeroData;
+}
+
+const Hero = forwardRef<HTMLDivElement, HeroProps>(({ data }, ref) => {
+  const bg = data.backgroundImage ? urlFor(data.backgroundImage).url() : "";
+
   return (
     <section
       ref={ref}
@@ -10,10 +25,7 @@ const Hero = forwardRef<HTMLDivElement>((props, ref) => {
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center scale-105 animate-in fade-in zoom-in-105 duration-1000"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=2574')",
-        }}
+        style={{ backgroundImage: `url(${bg})` }}
       />
 
       {/* Overlay */}
@@ -22,23 +34,26 @@ const Hero = forwardRef<HTMLDivElement>((props, ref) => {
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold tracking-tight text-white mb-6 text-balance">
-          Local Business Solutions
+          {data.title}
         </h1>
+
         <p className="text-lg md:text-xl text-white/90 mb-12 max-w-2xl mx-auto font-light tracking-wide">
-          Proudly serving Manchester with excellence and dedication
+          {data.subtitle}
         </p>
+
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <a
             href="#contact"
             className="inline-flex items-center justify-center rounded-full bg-white text-black px-8 py-4 text-base font-medium transition-all duration-300 hover:bg-white/90 hover:scale-105 min-w-[160px]"
           >
-            Get Started
+            {data.ctaPrimary}
           </a>
+
           <a
             href="#about"
             className="inline-flex items-center justify-center rounded-full border-2 border-white/30 backdrop-blur-sm bg-white/10 text-white px-8 py-4 text-base font-medium transition-all duration-300 hover:bg-white/20 hover:border-white/50 min-w-[160px]"
           >
-            Learn More
+            {data.ctaSecondary}
           </a>
         </div>
       </div>
@@ -52,5 +67,7 @@ const Hero = forwardRef<HTMLDivElement>((props, ref) => {
     </section>
   );
 });
+
+Hero.displayName = "Hero";
 
 export default Hero;

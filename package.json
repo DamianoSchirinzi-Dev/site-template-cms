@@ -11,10 +11,17 @@
   "dependencies": {
     "@headlessui/react": "^2.2.9",
     "@heroicons/react": "^2.2.0",
+    "@sanity/client": "^7.13.0",
+    "@sanity/image-url": "^1.2.0",
+    "@sanity/vision": "^4.16.0",
+    "framer-motion": "^11.18.2",
     "lucide-react": "^0.553.0",
     "next": "16.0.1",
+    "next-sanity": "^11.6.7",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "sanity": "^4.16.0",
+    "styled-components": "^6.1.19"
   },
   "devDependencies": {
     "@types/node": "^20",
